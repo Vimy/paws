@@ -7,6 +7,9 @@
 //
 
 #import "CatsTableViewController.h"
+#import <Parse/Parse.h>
+#import <ParseUI/ParseUI.h>
+#import <Bolts/Bolts.h>
 
 @interface CatsTableViewController ()
 
@@ -34,11 +37,26 @@
     
 }
 
-
+//Putting The Data On Screen
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+}
+
+- (PFQuery *)queryForTable {
+    if (![PFUser currentUser]) {
+        return nil;
+    }
+    
+    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    
+    [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
+    
+    [query orderByAscending:@"name"];
+    
+    
+    return query;
 }
 
 - (void)didReceiveMemoryWarning {
